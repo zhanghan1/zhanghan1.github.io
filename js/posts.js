@@ -1,1 +1,1 @@
-[{"title":"MySQL中的replace语句","date":"2017.10.06","uri":"2017/10/06/MySQL中的replace语句/","excerpt":""},{"title":"Hello World","date":"2017.10.06","uri":"2017/10/06/hello-world/","excerpt":""}]
+[{"title":"MySQL中的replace语句","date":"2017.10.06","uri":"2017/10/06/MySQL中的replace语句/","excerpt":""}]
