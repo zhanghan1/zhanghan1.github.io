@@ -3,14 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>基础架构研究</title>
+  <title>MySQL中的replace语句 | 基础架构研究</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="基础架构研究">
-<meta property="og:url" content="http://inf-research.com/index.html">
+  <meta name="description" content="一、背景当使用replace语句更新数据库中的信息时，原有的字段信息丢失。错误的原因：  认为replace语句相当于当主键冲突时，已修改的列将使用新值，未修改的列将使用旧值。但replace语句对于缺失的列将使用默认值，而不是当前行中的值，导致原有的列信息丢失。  二、replace语句详解MySQL中replace语句具体算法如下：   尝试把新行插入到表中 当因为主键(PRIMARY KEY">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL中的replace语句">
+<meta property="og:url" content="http://inf-research.com/2017/10/06/MySQL中的replace语句/index.html">
 <meta property="og:site_name" content="基础架构研究">
+<meta property="og:description" content="一、背景当使用replace语句更新数据库中的信息时，原有的字段信息丢失。错误的原因：  认为replace语句相当于当主键冲突时，已修改的列将使用新值，未修改的列将使用旧值。但replace语句对于缺失的列将使用默认值，而不是当前行中的值，导致原有的列信息丢失。  二、replace语句详解MySQL中replace语句具体算法如下：   尝试把新行插入到表中 当因为主键(PRIMARY KEY">
+<meta property="og:updated_time" content="2017-10-06T15:01:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基础架构研究">
+<meta name="twitter:title" content="MySQL中的replace语句">
+<meta name="twitter:description" content="一、背景当使用replace语句更新数据库中的信息时，原有的字段信息丢失。错误的原因：  认为replace语句相当于当主键冲突时，已修改的列将使用新值，未修改的列将使用旧值。但replace语句对于缺失的列将使用默认值，而不是当前行中的值，导致原有的列信息丢失。  二、replace语句详解MySQL中replace语句具体算法如下：   尝试把新行插入到表中 当因为主键(PRIMARY KEY">
   
     <link rel="alternate" href="/atom.xml" title="基础架构研究" type="application/atom+xml">
   
@@ -63,9 +67,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-MySQL中的replace语句" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-MySQL中的replace语句" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/10/06/MySQL中的replace语句/" class="article-date">
   <time datetime="2017-10-06T15:00:55.000Z" itemprop="datePublished">2017-10-06</time>
@@ -78,8 +80,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/06/MySQL中的replace语句/">MySQL中的replace语句</a>
+    <h1 class="article-title" itemprop="name">
+      MySQL中的replace语句
     </h1>
   
 
@@ -126,59 +128,74 @@
     </footer>
   </div>
   
-</article>
- 
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/10/06/hello-world/" class="article-date">
-  <time datetime="2017-10-06T13:59:03.000Z" itemprop="datePublished">2017-10-06</time>
-</a>
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/06/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- Table of Contents -->
-        
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://inf-research.com/2017/10/06/hello-world/" data-id="cj8g0ryn500014ls67jqxlhpx" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
   </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/06/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
   
 </article>
  
-
-
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
   
 
 </section>
@@ -186,74 +203,32 @@
     <aside id="sidebar">
   
     
-  <div class="widget-wrap">
-     
-        <h3 class="follow-title ">Follow me</h3>
-     
-    <div class="widget follow">
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
       
-              <a class="github" aria-hidden="true" href="https://github.com/zhanghan1" target="_blank" title="Github"></a>
-      
-      
-      
-      
-            <a class="email" aria-hidden="true"  href="mailto:zhanghan18@meituan.com" target="_blank" title="邮箱"></a>
-      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、背景"><span class="toc-number">1.</span> <span class="toc-text">一、背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、replace语句详解"><span class="toc-number">2.</span> <span class="toc-text">二、replace语句详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、参考资料"><span class="toc-number">3.</span> <span class="toc-text">三、参考资料</span></a></li></ol>
+          </div>
+      </div>
     </div>
-  </div>
 
+  
+    
 
   
     
   
     
+  
+    
 
   
     
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2017/10/06/MySQL中的replace语句/">MySQL中的replace语句</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/06/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title archive">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">2</span></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-<div class="widget-wrap">
-    <h3 class="widget-title">Links</h3>
-    <div class="widget">
-        <ul>
-            
-            <li>
-                <a href="http://inf-research.com">DarkMoon&#39;s blog</a>
-            </li>
-            
-        </ul>
-    </div>
-</div>
-
   
     <!--微信公众号二维码-->
 
