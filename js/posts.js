@@ -1,1 +1,1 @@
-[{"title":"MySQL中的replace语句","date":"2017.10.06","uri":"2017/10/06/MySQL中的replace语句/","excerpt":""}]
+[{"title":"MySQL中的replace语句","date":"2017.10.06","uri":"2017/10/06/MySQL中的replace语句/","excerpt":""},{"title":"Log4j2中RollingFileAppender详解","date":"2017.10.07","uri":"2017/10/07/Log4j2中RollingFileAppender详解/","excerpt":""}]

@@ -3,14 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>基础架构研究</title>
+  <title>Log4j2中RollingFileAppender详解 | 基础架构研究</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="基础架构研究">
-<meta property="og:url" content="http://inf-research.com/index.html">
+  <meta name="description" content="一、什么是RollingFileRollingFileAppender是Log4j2中的一种能够实现日志文件滚动更新(rollover)的Appender。rollover的意思是当满足一定条件(如文件达到了指定的大小，达到了指定的时间)后，就重命名原日志文件进行归档，并生成新的日志文件用于log写入。如果还设置了一定时间内允许归档的日志文件的最大数量，将对过旧的日志文件进行删除操作。Rollin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Log4j2中RollingFileAppender详解">
+<meta property="og:url" content="http://inf-research.com/2017/10/07/Log4j2中RollingFileAppender详解/index.html">
 <meta property="og:site_name" content="基础架构研究">
+<meta property="og:description" content="一、什么是RollingFileRollingFileAppender是Log4j2中的一种能够实现日志文件滚动更新(rollover)的Appender。rollover的意思是当满足一定条件(如文件达到了指定的大小，达到了指定的时间)后，就重命名原日志文件进行归档，并生成新的日志文件用于log写入。如果还设置了一定时间内允许归档的日志文件的最大数量，将对过旧的日志文件进行删除操作。Rollin">
+<meta property="og:updated_time" content="2017-10-07T03:10:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基础架构研究">
+<meta name="twitter:title" content="Log4j2中RollingFileAppender详解">
+<meta name="twitter:description" content="一、什么是RollingFileRollingFileAppender是Log4j2中的一种能够实现日志文件滚动更新(rollover)的Appender。rollover的意思是当满足一定条件(如文件达到了指定的大小，达到了指定的时间)后，就重命名原日志文件进行归档，并生成新的日志文件用于log写入。如果还设置了一定时间内允许归档的日志文件的最大数量，将对过旧的日志文件进行删除操作。Rollin">
   
     <link rel="alternate" href="/atom.xml" title="基础架构研究" type="application/atom+xml">
   
@@ -63,9 +67,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Log4j2中RollingFileAppender详解" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Log4j2中RollingFileAppender详解" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/10/07/Log4j2中RollingFileAppender详解/" class="article-date">
   <time datetime="2017-10-07T02:59:18.000Z" itemprop="datePublished">2017-10-07</time>
@@ -78,8 +80,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/07/Log4j2中RollingFileAppender详解/">Log4j2中RollingFileAppender详解</a>
+    <h1 class="article-title" itemprop="name">
+      Log4j2中RollingFileAppender详解
     </h1>
   
 
@@ -130,76 +132,74 @@
     </footer>
   </div>
   
-</article>
- 
-
-
-  
-    <article id="post-MySQL中的replace语句" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/10/06/MySQL中的replace语句/" class="article-date">
-  <time datetime="2017-10-06T15:00:55.000Z" itemprop="datePublished">2017-10-06</time>
-</a>
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/06/MySQL中的replace语句/">MySQL中的replace语句</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- Table of Contents -->
-        
-        <h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>当使用replace语句更新数据库中的信息时，原有的字段信息丢失。<br>错误的原因：</p>
-<blockquote>
-<p>认为replace语句相当于当主键冲突时，已修改的列将使用新值，未修改的列将使用旧值。<br>但replace语句对于缺失的列将使用默认值，而不是当前行中的值，导致原有的列信息丢失。</p>
-</blockquote>
-<h2 id="二、replace语句详解"><a href="#二、replace语句详解" class="headerlink" title="二、replace语句详解"></a>二、replace语句详解</h2><p>MySQL中replace语句具体算法如下：</p>
-<blockquote>
-<ol>
-<li>尝试把新行插入到表中</li>
-<li>当因为主键(PRIMARY KEY)冲突错误或(UNIQUE INDEX)唯一索引重复错误而造成插入失败时：<ul>
-<li>从表中删除含有重复关键字值的冲突行</li>
-<li>再次尝试把新行插入到表中</li>
-</ul>
-</li>
-</ol>
-</blockquote>
-<p>可以看出replace语句相当于insert操作或者delete+insert操作，因此，为了能够使用replace语句，必须同时具备insert和delete的权限。</p>
-<p>replace语句执行时，分以下两种情况：</p>
-<h4 id="情况1：insert"><a href="#情况1：insert" class="headerlink" title="情况1：insert"></a>情况1：insert</h4><p>当不存在主键冲突或唯一索引冲突，相当于insert操作</p>
-<h4 id="情况2：delete-and-insert"><a href="#情况2：delete-and-insert" class="headerlink" title="情况2：delete and insert"></a>情况2：delete and insert</h4><p>当存在主键冲突或唯一索引冲突，相当于delete操作，加insert操作</p>
-<p>所有列的值均取自在replace语句中被指定的值，所有缺失的列的值被设置为列的默认值，这和INSERT一样。<br>不能引用当前行的值，然后用于更新新行。(因为当当前行与新行发生冲突时，当前行将被删除，也就无法被引用了！)<br>例如，如果使用一个形如“SET col_name = col_name + 1”的赋值，则对位于右侧的列名称的引用会被作为DEFAULT(col_name)处理。<br>因此，该赋值相当于SET col_name = DEFAULT(col_name) + 1。</p>
-<h4 id="replace语句的返回值"><a href="#replace语句的返回值" class="headerlink" title="replace语句的返回值"></a>replace语句的返回值</h4><p>replace语句会返回一个数，来指示受影响的行的数目。该数是被删除和被插入的行数的和。<br>1.如果对于一个replace语句，返回值为1，则一行被插入，同时没有行被删除。<br>2.如果该数大于1，则在新行被插入前，有一个或多个旧行被删除。如果表包含多个唯一索引，并且新行与不同行的不同的唯一索引发生了重复。</p>
-<h4 id="示例1：test表id作为主键"><a href="#示例1：test表id作为主键" class="headerlink" title="示例1：test表id作为主键"></a>示例1：test表id作为主键</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE test (</div><div class="line">  id INT UNSIGNED NOT NULL AUTO_INCREMENT,</div><div class="line">  data VARCHAR(64) DEFAULT NULL,</div><div class="line">  ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</div><div class="line">  PRIMARY KEY (id)</div><div class="line">);</div><div class="line">mysql&gt; REPLACE INTO test VALUES (1, &apos;Old&apos;, &apos;2014-08-20 18:47:00&apos;);</div><div class="line">Query OK, 1 row affected (0.04 sec)</div><div class="line"> </div><div class="line">mysql&gt; REPLACE INTO test VALUES (1, &apos;New&apos;, &apos;2014-08-20 18:47:42&apos;);</div><div class="line">Query OK, 2 rows affected (0.04 sec)</div><div class="line"> </div><div class="line">mysql&gt; SELECT * FROM test;</div><div class="line">+----+------+---------------------+</div><div class="line">| id | data | ts                  |</div><div class="line">+----+------+---------------------+</div><div class="line">|  1 | New  | 2014-08-20 18:47:42 |</div><div class="line">+----+------+---------------------+</div><div class="line">1 row in set (0.00 sec)</div></pre></td></tr></table></figure>
-<p>第一个replace语句执行时，test表中没有数据，没有发生冲突，所以相当于执行了insert操作，返回值为1（1 row affected）。<br>第二个replace语句执行时，id=1的数据已存在，发生了主键冲突，所以相当于先执行了delete操作，然后执行了insert操作，返回值为2（2 rows affected）。</p>
-<h4 id="示例2：test表id，ts作为主键"><a href="#示例2：test表id，ts作为主键" class="headerlink" title="示例2：test表id，ts作为主键"></a>示例2：test表id，ts作为主键</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE test2 (</div><div class="line">  id INT UNSIGNED NOT NULL AUTO_INCREMENT,</div><div class="line">  data VARCHAR(64) DEFAULT NULL,</div><div class="line">  ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</div><div class="line">  PRIMARY KEY (id, ts)</div><div class="line">);</div><div class="line">mysql&gt; REPLACE INTO test2 VALUES (1, &apos;Old&apos;, &apos;2014-08-20 18:47:00&apos;);</div><div class="line">Query OK, 1 row affected (0.05 sec)</div><div class="line"> </div><div class="line">mysql&gt; REPLACE INTO test2 VALUES (1, &apos;New&apos;, &apos;2014-08-20 18:47:42&apos;);</div><div class="line">Query OK, 1 row affected (0.06 sec)</div><div class="line"> </div><div class="line">mysql&gt; SELECT * FROM test2;</div><div class="line">+----+------+---------------------+</div><div class="line">| id | data | ts                  |</div><div class="line">+----+------+---------------------+</div><div class="line">|  1 | Old  | 2014-08-20 18:47:00 |</div><div class="line">|  1 | New  | 2014-08-20 18:47:42 |</div><div class="line">+----+------+---------------------+</div><div class="line">2 rows in set (0.00 sec)</div></pre></td></tr></table></figure>
-<p>因id，ts作为主键，replace时未发生主键冲突，所以均相当于insert操作。</p>
-<h2 id="三、参考资料"><a href="#三、参考资料" class="headerlink" title="三、参考资料"></a>三、参考资料</h2><p><a href="https://dev.mysql.com/doc/refman/5.7/en/replace.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.7/en/replace.html</a> MySQL官网replace语法<br><a href="http://www.cnblogs.com/c-961900940/p/6197878.html" target="_blank" rel="external">http://www.cnblogs.com/c-961900940/p/6197878.html</a>  MySQL中replace into的用法<br><a href="http://www.cnblogs.com/martin1009/archive/2012/10/08/2714858.html" target="_blank" rel="external">http://www.cnblogs.com/martin1009/archive/2012/10/08/2714858.html</a> mysql replace into用法详细说明</p>
-
-      
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://inf-research.com/2017/10/06/MySQL中的replace语句/" data-id="cj8gqshfh0000lds6ms65ow2r" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
   </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/06/MySQL中的replace语句/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">MySQL中的replace语句</div>
+    </a>
+  
+</nav>
+
   
 </article>
  
-
-
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
   
 
 </section>
@@ -207,74 +207,32 @@
     <aside id="sidebar">
   
     
-  <div class="widget-wrap">
-     
-        <h3 class="follow-title ">Follow me</h3>
-     
-    <div class="widget follow">
+
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
       
-              <a class="github" aria-hidden="true" href="https://github.com/zhanghan1" target="_blank" title="Github"></a>
-      
-      
-      
-      
-            <a class="email" aria-hidden="true"  href="mailto:zhanghan18@meituan.com" target="_blank" title="邮箱"></a>
-      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、什么是RollingFile"><span class="toc-number">1.</span> <span class="toc-text">一、什么是RollingFile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、TriggeringPolicy"><span class="toc-number">2.</span> <span class="toc-text">二、TriggeringPolicy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、DefaultRolloverStrategy"><span class="toc-number">3.</span> <span class="toc-text">三、DefaultRolloverStrategy</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#情况1：filePattern中仅含有date-time-pattern"><span class="toc-number">3.0.1.</span> <span class="toc-text">情况1：filePattern中仅含有date/time pattern</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#情况2：filePattern中仅含有整数计数器（-i）"><span class="toc-number">3.0.2.</span> <span class="toc-text">情况2：filePattern中仅含有整数计数器（%i）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#情况3：如果filePattern中既含有date-time-pattern，又含有-i计数器"><span class="toc-number">3.0.3.</span> <span class="toc-text">情况3：如果filePattern中既含有date/time pattern，又含有%i计数器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、程序测试demo"><span class="toc-number">4.</span> <span class="toc-text">五、程序测试demo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-测试基于时间触发"><span class="toc-number">4.0.1.</span> <span class="toc-text">1.测试基于时间触发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-测试基于文件大小的触发"><span class="toc-number">4.0.2.</span> <span class="toc-text">2.测试基于文件大小的触发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-测试DefaultRolloverStrategy的max参数和-i计数器的搭配使用"><span class="toc-number">4.0.3.</span> <span class="toc-text">3.测试DefaultRolloverStrategy的max参数和%i计数器的搭配使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、参考资料"><span class="toc-number">5.</span> <span class="toc-text">六、参考资料</span></a></li></ol>
+          </div>
+      </div>
     </div>
-  </div>
 
+  
+    
 
   
     
   
     
+  
+    
 
   
     
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2017/10/07/Log4j2中RollingFileAppender详解/">Log4j2中RollingFileAppender详解</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/06/MySQL中的replace语句/">MySQL中的replace语句</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title archive">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">2</span></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-<div class="widget-wrap">
-    <h3 class="widget-title">Links</h3>
-    <div class="widget">
-        <ul>
-            
-            <li>
-                <a href="http://inf-research.com">DarkMoon&#39;s blog</a>
-            </li>
-            
-        </ul>
-    </div>
-</div>
-
   
     <!--微信公众号二维码-->
 
